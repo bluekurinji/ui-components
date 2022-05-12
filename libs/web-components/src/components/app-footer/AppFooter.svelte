@@ -59,7 +59,6 @@
         case META_LINK: {
           const message = state as MetaLinkRegisterMessage;
           metaLinks = [...metaLinks, {title: message.title, url: message.url}];
-          console.log(metaLinks);
           break;
         }
         case NAVIGATION_LINK: {
@@ -199,7 +198,7 @@
   .navigation-section {
     flex-direction: column;
     flex: 1 1 0;
-    min-width: 212x;
+    min-width: 212px;
   }
 
   .navigation-section-name {
@@ -212,7 +211,7 @@
 
   .navigation-section-name-divider {
     width: 75%;
-    margin: 0px;
+    margin: 0;
   }
 
   .navigation-link {
@@ -280,14 +279,14 @@
   }
 
  .goa-copyright {
-    margin-top: 0px;
-    margin-bottom: 0px;
+    margin-top: 0;
+    margin-bottom: 0;
     font-size: var(--fs-base);
   }
 
   .navigation-links-divider {
     margin-top: 28px;
-    margin-bottom:0px;
+    margin-bottom: 0;
   }
 
   @media (max-width: 1024px) {
@@ -316,8 +315,8 @@
     .logo {
       width:125px;
       height:36px;
-      margin-top: 0px;
-      margin-bottom: 0px;
+      margin-top: 0;
+      margin-bottom: 0;
     }
 
     .goa-copyright {
@@ -343,7 +342,7 @@
     .meta-and-navigation-sections-only-footer .meta-link {
       margin-top: 24px;
       margin-right: 20px;
-      margin-bottom: 0px;
+      margin-bottom: 0;
       font-size: var(--fs-sm);
     }
 
@@ -359,7 +358,7 @@
 
     .navigation-links-divider {
       margin-top: 24px;
-      margin-bottom:0px;
+      margin-bottom: 0;
     }
 
     .default-footer .logo {

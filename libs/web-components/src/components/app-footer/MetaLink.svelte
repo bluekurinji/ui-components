@@ -10,26 +10,15 @@
 
   onMount(async () => {
     ctx = await getContext(footerid);
-    console.log("MetaLink Context onMOunt for : " + footerid);
     ctx.notify({
       type: META_LINK,
-      url: metaLink.dataset.url,
-      title: metaLink.dataset.title
+      url: url,
+      title: title
     });
   });
-
-  let metaLink;
 
   export let footerid: string = "goa-app-footer-id";
   export let title: string = "";
   export let url: string = "";
 </script>
-
-<!-- HTML -->
-<data
-  bind:this={metaLink}
-  data-url={url}
-  data-title={title}
->
-</data>
 

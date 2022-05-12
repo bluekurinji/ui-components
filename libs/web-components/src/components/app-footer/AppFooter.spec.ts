@@ -9,7 +9,7 @@ function createElement(props = {}) {
 describe('GoAAppFooter Component', () => {
 
   it("should render", async () => {
-    const el = await createElement();
+    const el = createElement();
     const appFooter = el.container.querySelectorAll('.app-footer-container');
     expect(appFooter).toBeTruthy();
   });
@@ -36,9 +36,8 @@ describe('GoAAppFooter Component', () => {
         title.push(linkElement.text);
       });
 
-      expect(["http://localhost/A", "http://localhost/B", "http://localhost/C", "http://localhost/D"]).toEqual(urls.sort());
-      expect(["xyz1", "xyz2", "xyz3", "xyz4"]).toEqual(title.sort());
-
+      expect(urls.sort()).toEqual(["http://localhost/A", "http://localhost/B", "http://localhost/C", "http://localhost/D"]);
+      expect(title.sort()).toEqual(["xyz1", "xyz2", "xyz3", "xyz4"]);
 
       const navigationLink = el.container.querySelectorAll('.navigation-link');
       expect(navigationLink.length).toBe(0);
@@ -55,7 +54,7 @@ describe('GoAAppFooter Component', () => {
       { "url":"D", "title": "xyz4" }
     ];
 
-    const el = await createElement({ navigationLinks: navigationlinks });
+    const el = createElement({ navigationLinks: navigationlinks });
 
     await waitFor(() => {
       const navigationLinks = el.container.querySelectorAll('.navigation-link');
@@ -67,8 +66,8 @@ describe('GoAAppFooter Component', () => {
         title.push(linkElement.text);
       });
 
-      expect(["http://localhost/A", "http://localhost/B", "http://localhost/C", "http://localhost/D"]).toEqual(urls.sort());
-      expect(["xyz1", "xyz2", "xyz3", "xyz4"]).toEqual(title.sort());
+      expect(urls.sort()).toEqual(["http://localhost/A", "http://localhost/B", "http://localhost/C", "http://localhost/D"]);
+      expect(title.sort()).toEqual(["xyz1", "xyz2", "xyz3", "xyz4"]);
 
       const metaLink = el.container.querySelectorAll('.meta-link');
       expect(metaLink.length).toBe(0);
@@ -84,7 +83,7 @@ describe('GoAAppFooter Component', () => {
       { "name": "CCC", "links": [{ "url":"F", "title": "xyz6" }]}
     ];
 
-    const el = await createElement({ navigationSections: navigationsections });
+    const el = createElement({ navigationSections: navigationsections });
 
     await waitFor(() => {
 
@@ -94,7 +93,7 @@ describe('GoAAppFooter Component', () => {
         const element = (sectionName as HTMLElement);
         names.push((element.firstChild as HTMLElement).textContent);
       });
-      expect(["AAA", "BBB", "CCC"]).toEqual(names.sort());
+      expect(names.sort()).toEqual(["AAA", "BBB", "CCC"]);
 
       const navigationLinks = el.container.querySelectorAll('.navigation-link');
       const urls: string[] = [];
@@ -105,8 +104,8 @@ describe('GoAAppFooter Component', () => {
         title.push(linkElement.text);
       });
 
-      expect(["http://localhost/A", "http://localhost/B", "http://localhost/C", "http://localhost/D", "http://localhost/E", "http://localhost/F"]).toEqual(urls.sort());
-      expect(["xyz1", "xyz2", "xyz3", "xyz4", "xyz5", "xyz6"]).toEqual(title.sort());
+      expect(urls.sort()).toEqual(["http://localhost/A", "http://localhost/B", "http://localhost/C", "http://localhost/D", "http://localhost/E", "http://localhost/F"]);
+      expect(title.sort()).toEqual(["xyz1", "xyz2", "xyz3", "xyz4", "xyz5", "xyz6"]);
 
       const metaLink = el.container.querySelectorAll('.meta-link');
       expect(metaLink.length).toBe(0);

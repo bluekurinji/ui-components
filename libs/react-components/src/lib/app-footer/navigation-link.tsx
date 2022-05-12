@@ -17,16 +17,16 @@ declare global {
 }
 
 interface Props {
-  footerid?: string;
+  footerId?: string;
   url: string;
   title: string;
   section?: string;
 }
 
-export const GoANavigationLink: FC<Props> = ({ footerid, url, title, section, children }) => {
+export const GoANavigationLink: FC<Props> = ({ footerId, url, title, section, children }) => {
   return (
     <goa-navigation-link
-      footerid={footerid}
+      footerid={footerId}
       url={url}
       title={title}
       section={section}

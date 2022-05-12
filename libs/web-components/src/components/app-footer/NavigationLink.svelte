@@ -13,9 +13,9 @@
 
     ctx.notify({
       type: NAVIGATION_LINK,
-      url: navigationLink.dataset.url,
-      title: navigationLink.dataset.title,
-      section: navigationLink.dataset.section,
+      url: url,
+      title: title,
+      section: section,
     });
   });
 
@@ -26,13 +26,4 @@
   export let url: string = "";
   export let section: string = "";
 </script>
-
-<!-- HTML -->
-<data
-  bind:this={navigationLink}
-  data-url={url}
-  data-title={title}
-  data-section={section}
->
-</data>
 

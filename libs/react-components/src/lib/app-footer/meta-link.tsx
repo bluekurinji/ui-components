@@ -16,15 +16,15 @@ declare global {
 }
 
 interface Props {
-  footerid?: string;
+  footerId?: string;
   url: string;
   title: string;
 }
 
-export const GoAMetaLink: FC<Props> = ({ footerid, url, title, children }) => {
+export const GoAMetaLink: FC<Props> = ({ footerId, url, title, children }) => {
   return (
     <goa-meta-link
-      footerid={footerid}
+      footerid={footerId}
       url={url}
       title={title}
     >

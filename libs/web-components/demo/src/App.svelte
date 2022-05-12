@@ -14,12 +14,6 @@
     <a href="http://signin.gov.au/">Sign in</a>
   </goa-app-header>
 
-  <center>
-    <br>
-    <h1> content here </h1>
-    <br>
-  </center>
-
   <goa-page-block>
     <h2>Components</h2>
 
