@@ -93,24 +93,24 @@
     >
       <slot />
       {#if (navigationSections.length || navigationLinks.length) }
-      <div class="navigation-links">
-        {#if navigationSections.length}
-          {#each navigationSections as navigationSection (navigationSection.name) }
-            <div class="navigation-section">
-              <span class="navigation-section-name">{navigationSection.name}</span>
-              <hr class="navigation-section-name-divider"/>
-              {#each navigationSection.links as navigationlink (navigationlink.title) }
-                <a href={navigationlink.url} class="navigation-link">{navigationlink.title}</a>
-              {/each}
-            </div>
-          {/each}
-        {:else if navigationLinks.length }
-          {#each navigationLinks as navigationlink (navigationlink.title) }
-            <a href={navigationlink.url} class="navigation-link">{navigationlink.title}</a>
-          {/each}
-        {/if}
-      </div>
-      <hr class="navigation-links-divider" />
+        <div class="navigation-links">
+          {#if navigationSections.length}
+            {#each navigationSections as navigationSection (navigationSection.name) }
+              <div class="navigation-section">
+                <span class="navigation-section-name">{navigationSection.name}</span>
+                <hr class="navigation-section-name-divider"/>
+                {#each navigationSection.links as navigationlink (navigationlink.title) }
+                  <a href={navigationlink.url} class="navigation-link">{navigationlink.title}</a>
+                {/each}
+              </div>
+            {/each}
+          {:else if navigationLinks.length }
+            {#each navigationLinks as navigationlink (navigationlink.title) }
+              <a href={navigationlink.url} class="navigation-link">{navigationlink.title}</a>
+            {/each}
+          {/if}
+        </div>
+        <hr class="navigation-links-divider" />
       {/if}
 
       <div class:meta-links-logo-and-copyright="{metaLinks.length}">
@@ -148,11 +148,11 @@
   }
 
   .footer {
-    max-width: 960px;
+    max-width: 60rem;
   }
 
   .brand {
-    height: 16px;
+    height: 1rem;
     background-color: var(--goa-color-brand);
   }
 
@@ -174,15 +174,15 @@
   }
 
   .meta-link {
-    margin-top:56px;
-    margin-right: 28px;
+    margin-top: 3.5em;
+    margin-right: 1.75rem;
     color: var(--goa-color-text);
     font-size: var(--fs-base);
   }
 
   .logo {
-    height:41px;
-    width:142px;
+    height: 2.56rem;
+    width: 8.88rem;
   }
 
   .app-footer-container {
@@ -198,15 +198,15 @@
   .navigation-section {
     flex-direction: column;
     flex: 1 1 0;
-    min-width: 212px;
+    min-width: 13.25rem;
   }
 
   .navigation-section-name {
     font-size: var(--fs-xl);
     line-height: var(--lh-lg);
     font-weight: var(--fw-regular);
-    margin-bottom: 28px;
-    margin-top: 28px;
+    margin-bottom: 1.75rem;
+    margin-top: 1.75rem;
   }
 
   .navigation-section-name-divider {
@@ -215,10 +215,10 @@
   }
 
   .navigation-link {
-    margin-top: 28px;
-    margin-right: 28px;
+    margin-top: 1.75rem;
+    margin-right: 1.75rem;
     color: var(--goa-color-text);
-    width:212px;
+    width: 13.25rem;
     font-size: var(--fs-base);
   }
 
@@ -229,53 +229,53 @@
   }
 
   .meta-links-only-footer {
-    padding-top: 19px;
-    padding-bottom:56px;
+    padding-top: 1.19em;
+    padding-bottom: 3.5em;
   }
 
   .navigation-links-only-footer,
   .meta-and-navigation-links-only-footer,
   .meta-and-navigation-sections-only-footer,
   .navigation-sections-only-footer  {
-    padding-top: 28px;
-    padding-bottom:56px;
+    padding-top: 1.75rem;
+    padding-bottom: 3.5em;
   }
 
   .meta-links-only-footer .meta-link {
-    margin-top: 37.5px;
-    margin-right: 28px;
+    margin-top: 2.34rem;
+    margin-right: 1.75rem;
     color: var(--goa-color-text);
   }
 
 
   .meta-and-navigation-links-only-footer .meta-link {
-    margin-top: 37.5px;
-    margin-right: 28px;
+    margin-top: 2.34rem;
+    margin-right: 1.75rem;
     color: var(--goa-color-text);
   }
 
   .meta-and-navigation-sections-only-footer .meta-link {
-    margin-top: 56.5px;
-    margin-right: 28px;
+    margin-top: 3.53rem;
+    margin-right: 1.75rem;
     color: var(--goa-color-text);
   }
 
   .default-footer .logo {
-    margin-top: 56px;
-    margin-bottom: 56px;
+    margin-top: 3.5rem;
+    margin-bottom: 3.5rem;
     display: block;
   }
 
   .navigation-links-only-footer .logo,
   .meta-and-navigation-links-only-footer .logo,
   .meta-links-only-footer .logo {
-    margin-top: 28px;
-    margin-bottom: 28px;
+    margin-top: 1.75rem;
+    margin-bottom: 1.75rem;
   }
 
   .navigation-sections-only-footer .logo, .meta-and-navigation-sections-only-footer .logo  {
-    margin-top: 47px;
-    margin-bottom: 28px;
+    margin-top: 2.93rem;
+    margin-bottom: 1.75rem;
   }
 
  .goa-copyright {
@@ -285,23 +285,23 @@
   }
 
   .navigation-links-divider {
-    margin-top: 28px;
+    margin-top: 1.75rem;
     margin-bottom: 0;
   }
 
-  @media (max-width: 1024px) {
+  @media (max-width: 64rem) {
     .logo {
-      margin-top: 34px;
-      margin-bottom: 24px;
+      margin-top: 2.125rem;
+      margin-bottom: 1.5rem;
     }
   }
-  @media (max-width: 959px) {
+  @media (max-width: 59.9rem) {
     .app-footer-container {
-      padding-left: 16px;
-      padding-right: 16px;
+      padding-left: 1rem;
+      padding-right: 1rem;
     }
   }
-  @media (max-width: 640px) {
+  @media (max-width: 40rem) {
 
     .logo-and-copyright {
       align-items: flex-start;
@@ -313,8 +313,8 @@
     }
 
     .logo {
-      width:125px;
-      height:36px;
+      width:7.8rem;
+      height: 2.25rem;
       margin-top: 0;
       margin-bottom: 0;
     }
@@ -327,21 +327,21 @@
       font-size: var(--fs-base);
       line-height: var(--lh-base);
       font-weight: var(--fw-bold);
-      margin-bottom: 16px;
-      margin-top: 24px;
+      margin-bottom: 1rem;
+      margin-top: 1.5rem;
     }
 
     .navigation-link {
-      min-width:639px;
-      margin-top: 24px;
+      min-width: 40rem;
+      margin-top: 1.5rem;
       font-size: var(--fs-sm);
     }
 
     .meta-links-only-footer .meta-link,
     .meta-and-navigation-links-only-footer .meta-link,
     .meta-and-navigation-sections-only-footer .meta-link {
-      margin-top: 24px;
-      margin-right: 20px;
+      margin-top: 1.5rem;
+      margin-right: 1.25rem;
       margin-bottom: 0;
       font-size: var(--fs-sm);
     }
@@ -352,18 +352,18 @@
     .navigation-sections-only-footer,
     .meta-and-navigation-links-only-footer,
     .meta-and-navigation-sections-only-footer {
-      padding-top: 12px;
-      padding-bottom:36px;
+      padding-top: 0.75rem;
+      padding-bottom: 2.25rem;
     }
 
     .navigation-links-divider {
-      margin-top: 24px;
+      margin-top: 1.5rem;
       margin-bottom: 0;
     }
 
     .default-footer .logo {
-      margin-top: 24px;
-      margin-bottom: 24px;
+      margin-top: 1.5rem;
+      margin-bottom: 1.5rem;
     }
 
     .default-footer .logo-and-copyright {
