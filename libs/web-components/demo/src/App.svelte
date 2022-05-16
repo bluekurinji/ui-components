@@ -546,6 +546,33 @@
   <goa-meta-link  url="accessibility.html" title="Accessibility" />
   <goa-meta-link  url="using-alberta.html" title="Using Alberta.ca" />
 
+  <goa-navigation-link url="a.html" title="Arts and culture" />
+  <goa-navigation-link url="b.html" title="Education and training" />
+  <goa-navigation-link url="c.html" title="Family and social supports" />
+  <goa-navigation-link url="d.html" title="Housing and community" />
+  <goa-navigation-link url="e.html" title="Life events" />
+
+  <goa-navigation-link url="f.html" title="Business and economy" />
+  <goa-navigation-link url="g.html" title="Emergencies and public safety" />
+  <goa-navigation-link url="h.html" title="Government" />
+  <goa-navigation-link url="i.html" title="Jobs and employment" />
+  <goa-navigation-link url="j.html" title="Moving to Alberta" />
+
+  <goa-navigation-link url="instagram.html" title="Instagram" />
+  <goa-navigation-link url="youtube.html" title="YouTube" />
+  <goa-navigation-link url="facebook.html" title="Facebook" />
+  <goa-navigation-link url="snapchat.html" title="Snapchat" />
+  <goa-navigation-link url="twitter.html" title="Twitter" />
+
+</goa-app-footer>
+<!--
+<goa-app-footer>
+
+  <goa-meta-link  url="privacy.html" title="Privacy" />
+  <goa-meta-link  url="disclaimer.html" title="Disclaimer" />
+  <goa-meta-link  url="accessibility.html" title="Accessibility" />
+  <goa-meta-link  url="using-alberta.html" title="Using Alberta.ca" />
+
 
   <goa-navigation-link section="aaa" url="a.html" title="Arts and culture" />
   <goa-navigation-link section="aaa" url="b.html" title="Education and training" />
@@ -566,7 +593,7 @@
   <goa-navigation-link section="ccc" url="twitter.html" title="Twitter" />
 
 </goa-app-footer>
-
+-->
   </main>
 
 <style>

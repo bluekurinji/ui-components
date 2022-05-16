@@ -17,11 +17,18 @@
   let ctx: ContextStore;
   let metaLinks: Link[] = [];
   let navigationLinks: Link[] = [];
-  let navigationSections: NavigationSection[] = [
+  let navigationSections: NavigationSection[] = []; /* [
     {"name":"aaa", "links":[[{"title":"1", "url": "1.html"}, {"title":"2", "url": "2.html"}, {"title":"3", "url": "3.html"}, {"title":"4", "url": "4.html"}], [{"title":"5", "url": "5.html"}, {"title":"6", "url": "6.html"}, {"title":"7", "url": "7.html"}, {"title":"8", "url": "8.html"}]]},
-    {"name":"bbb", "links":[[{"title":"1", "url": "1.html"}, {"title":"2", "url": "2.html"}, {"title":"3", "url": "3.html"}, {"title":"4", "url": "4.html"}]]},
-    {"name":"ccc", "links":[[{"title":"1", "url": "1.html"}, {"title":"2", "url": "2.html"}, {"title":"3", "url": "3.html"}, {"title":"4", "url": "4.html"}]]}
+    {"name":"bbb", "links":[[{"title":"a", "url": "a.html"}, {"title":"Emergencies and public safety", "url": "b.html"}, {"title":"Government", "url": "c.html"}, {"title":"d", "url": "d.html"}, {"title":"e", "url": "e.html"}, {"title":"f", "url": "f.html"}]]},
+    {"name":"ccc", "links":[[{"title":"Instagram", "url": "m.html"}, {"title":"n", "url": "n.html"}, {"title":"Twitter", "url": "o.html"}, {"title":"p", "url": "p.html"}]]}
   ];
+  let navigationSections1: NavigationSection[] = [
+    {"name":"", "links":[[{"title":"1", "url": "1.html"}, {"title":"2", "url": "2.html"}, {"title":"3", "url": "3.html"}, {"title":"4", "url": "4.html"}, {"title":"5", "url": "5.html"}, {"title":"6", "url": "6.html"}, {"title":"7", "url": "7.html"}, {"title":"8", "url": "8.html"}]]},
+    {"name":"", "links":[[{"title":"a", "url": "a.html"}, {"title":"Emergencies and public safety", "url": "b.html"}, {"title":"Government", "url": "c.html"}, {"title":"d", "url": "d.html"}, {"title":"e", "url": "e.html"}, {"title":"f", "url": "f.html"}]]},
+    {"name":"", "links":[[{"title":"Instagram", "url": "m.html"}, {"title":"n", "url": "n.html"}, {"title":"Twitter", "url": "o.html"}, {"title":"p", "url": "p.html"}]]}
+  ];
+*/
+  console.log("navigationSections.length : " + navigationSections.length);
 
   $: isDefaultFooter = (!metaLinks.length && !navigationLinks.length && !navigationSections.length);
   $: isMetaLinksOnlyFooter = (metaLinks.length && !navigationLinks.length && !navigationSections.length);
@@ -99,7 +106,7 @@
       {#if (navigationSections.length || navigationLinks.length) }
         <div class="navigation-links">
           {#if navigationSections.length}
-            {#each navigationSections as navigationSection (navigationSection.name) }
+            {#each navigationSections as navigationSection (navigationSection) }
               {#each navigationSection.links  as columnLinks, i }
                 <div class="navigation-section">
 
@@ -242,7 +249,7 @@
     margin-top: 1.75rem;
     margin-right: 1.75rem;
     color: var(--goa-color-text);
-    width: 13.25rem;
+    /*width: 13.25rem; */
     font-size: var(--fs-base);
     height: calc(2 * var(--fs-base));
   }
