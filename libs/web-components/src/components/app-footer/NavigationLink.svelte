@@ -19,8 +19,6 @@
     });
   });
 
-  let navigationLink;
-
   export let footerid: string = "goa-app-footer-id";
   export let title: string = "";
   export let url: string = "";

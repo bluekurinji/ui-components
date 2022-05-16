@@ -17,7 +17,11 @@
   let ctx: ContextStore;
   let metaLinks: Link[] = [];
   let navigationLinks: Link[] = [];
-  let navigationSections: NavigationSection[] = [];
+  let navigationSections: NavigationSection[] = [
+    {"name":"aaa", "links":[[{"title":"1", "url": "1.html"}, {"title":"2", "url": "2.html"}, {"title":"3", "url": "3.html"}, {"title":"4", "url": "4.html"}], [{"title":"5", "url": "5.html"}, {"title":"6", "url": "6.html"}, {"title":"7", "url": "7.html"}, {"title":"8", "url": "8.html"}]]},
+    {"name":"bbb", "links":[[{"title":"1", "url": "1.html"}, {"title":"2", "url": "2.html"}, {"title":"3", "url": "3.html"}, {"title":"4", "url": "4.html"}]]},
+    {"name":"ccc", "links":[[{"title":"1", "url": "1.html"}, {"title":"2", "url": "2.html"}, {"title":"3", "url": "3.html"}, {"title":"4", "url": "4.html"}]]}
+  ];
 
   $: isDefaultFooter = (!metaLinks.length && !navigationLinks.length && !navigationSections.length);
   $: isMetaLinksOnlyFooter = (metaLinks.length && !navigationLinks.length && !navigationSections.length);
@@ -96,13 +100,28 @@
         <div class="navigation-links">
           {#if navigationSections.length}
             {#each navigationSections as navigationSection (navigationSection.name) }
-              <div class="navigation-section">
-                <span class="navigation-section-name">{navigationSection.name}</span>
-                <hr class="navigation-section-name-divider"/>
-                {#each navigationSection.links as navigationlink (navigationlink.title) }
-                  <a href={navigationlink.url} class="navigation-link">{navigationlink.title}</a>
-                {/each}
-              </div>
+              {#each navigationSection.links  as columnLinks, i }
+                <div class="navigation-section">
+
+                  {#if navigationSection.name}
+                    {#if (i == 0)}
+                      <span class="navigation-section-name">{navigationSection.name}</span>
+                    {:else}
+                      <span class="navigation-section-name">&nbsp;</span>
+                    {/if}
+
+                    <hr
+                      class:navigation-section-name-divider-full={(i < navigationSection.links.length -1)}
+                      class:navigation-section-name-divider={(i == navigationSection.links.length -1)}
+                    />
+                  {/if}
+
+                  {#each columnLinks as navigationlink (navigationlink.title) }
+                    <a href={navigationlink.url} class="navigation-link">{navigationlink.title}</a>
+                  {/each}
+
+                </div>
+              {/each}
             {/each}
           {:else if navigationLinks.length }
             {#each navigationLinks as navigationlink (navigationlink.title) }
@@ -113,7 +132,7 @@
         <hr class="navigation-links-divider" />
       {/if}
 
-      <div class:meta-links-logo-and-copyright="{metaLinks.length}">
+      <div class:meta-links-logo-and-copyright={metaLinks.length}>
 
         {#if metaLinks.length }
           <div class="meta-links">
@@ -124,7 +143,7 @@
         {/if}
 
         <div class="logo-and-copyright"
-            class:logo-and-copyright-with-links="{metaLinks.length || navigationLinks.length || navigationSections.length}">
+            class:logo-and-copyright-with-links={metaLinks.length || navigationLinks.length || navigationSections.length}>
           <a href={copyrighturl} class="goa-copyright">© {copyrighttext}</a>
           <a href={appurl} title={title}>
             <img
@@ -214,12 +233,18 @@
     margin: 0;
   }
 
+  .navigation-section-name-divider-full {
+    width: 100%;
+    margin: 0;
+  }
+
   .navigation-link {
     margin-top: 1.75rem;
     margin-right: 1.75rem;
     color: var(--goa-color-text);
     width: 13.25rem;
     font-size: var(--fs-base);
+    height: calc(2 * var(--fs-base));
   }
 
   .default-footer .logo-and-copyright {
