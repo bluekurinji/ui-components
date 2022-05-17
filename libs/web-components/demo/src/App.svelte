@@ -538,7 +538,7 @@
 
   </goa-page-block>
 
-
+<!--
 <goa-app-footer>
 
   <goa-meta-link  url="privacy.html" title="Privacy" />
@@ -565,7 +565,7 @@
   <goa-navigation-link url="twitter.html" title="Twitter" />
 
 </goa-app-footer>
-<!--
+-->
 <goa-app-footer>
 
   <goa-meta-link  url="privacy.html" title="Privacy" />
@@ -593,7 +593,7 @@
   <goa-navigation-link section="ccc" url="twitter.html" title="Twitter" />
 
 </goa-app-footer>
--->
+
   </main>
 
 <style>
