@@ -1,7 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import GoAAppFooter, { Props as AppFooterProps }  from "./app-footer";
-import Props from "./app-footer";
 
 describe("GoA AppFooter", () => {
 

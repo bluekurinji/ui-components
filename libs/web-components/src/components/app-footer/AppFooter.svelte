@@ -17,7 +17,23 @@
   let ctx: ContextStore;
   let metaLinks: Link[] = [];
   let navigationLinks: Link[] = [];
-  let navigationSections: NavigationSection[] = [];
+  let navigationSections: NavigationSection[] = [
+    {"name":"Section 1", "links":[[{"title":"a", "url": "a.html"}, {"title":"Emergencies and public safety", "url": "b.html"}, {"title":"Government", "url": "c.html"}, {"title":"d", "url": "d.html"}, {"title":"e", "url": "e.html"}, {"title":"f", "url": "f.html"}]]},
+    {"name":"Section 2", "links":[[{"title":"Instagram", "url": "m.html"}, {"title":"n", "url": "n.html"}, {"title":"Twitter", "url": "o.html"}, {"title":"p", "url": "p.html"}]]},
+    {"name":"Section 3", "links":[[{"title":"1", "url": "1.html"}, {"title":"2", "url": "2.html"}, {"title":"3", "url": "3.html"}, {"title":"4", "url": "4.html"}], [{"title":"5", "url": "5.html"}, {"title":"6", "url": "6.html"}, {"title":"7", "url": "7.html"}, {"title":"8", "url": "8.html"}]]},
+  ];
+/*
+  let navigationSections1: NavigationSection[] = [
+    {"name":"", "links":[[{"title":"1", "url": "1.html"}, {"title":"2", "url": "2.html"}, {"title":"3", "url": "3.html"}, {"title":"4", "url": "4.html"}, {"title":"5", "url": "5.html"}, {"title":"6", "url": "6.html"}, {"title":"7", "url": "7.html"}, {"title":"8", "url": "8.html"}]]},
+    {"name":"", "links":[[{"title":"a", "url": "a.html"}, {"title":"Emergencies and public safety", "url": "b.html"}, {"title":"Government", "url": "c.html"}, {"title":"d", "url": "d.html"}, {"title":"e", "url": "e.html"}, {"title":"f", "url": "f.html"}]]},
+    {"name":"", "links":[[{"title":"Instagram", "url": "m.html"}, {"title":"n", "url": "n.html"}, {"title":"Twitter", "url": "o.html"}, {"title":"p", "url": "p.html"}]]}
+  ];
+*/
+
+  const maxContentWidth: number = 960;
+  const columnWidth: number = 240;
+  let munberOfColumns: number = 4;
+  let navigationLinksbyColumns: Link[][] = [];
 
   $: isDefaultFooter = (!metaLinks.length && !navigationLinks.length && !navigationSections.length);
   $: isMetaLinksOnlyFooter = (metaLinks.length && !navigationLinks.length && !navigationSections.length);
@@ -25,7 +41,48 @@
   $: isNavigationSectionsOnlyFooter = (!metaLinks.length && !navigationLinks.length && navigationSections.length);
   $: isMetaAndNavigationLinksFooter = (metaLinks.length && navigationLinks.length && !navigationSections.length);
   $: isMetaAndNavigationSectionsFooter = (metaLinks.length && !navigationLinks.length && navigationSections.length);
+  $: navigationLinksbyColumns = getNavigationLinksbyColumns(navigationLinks, munberOfColumns);
 
+  var fourColumnMedia = window.matchMedia(`(min-width: ${4*columnWidth}px)`);
+  fourColumnMedia.onchange = (e) => {
+      if (e.matches) {
+        munberOfColumns = 4;
+      }
+  }
+
+  var threeColumnMedia = window.matchMedia(`(min-width: ${3*columnWidth}px) and (max-width: ${(4*columnWidth)-1}px)`);
+  threeColumnMedia.onchange = (e) => {
+      if (e.matches) {
+        munberOfColumns = 3;
+      }
+  }
+
+  var twoColumnMedia = window.matchMedia(`(min-width: ${2*columnWidth}px) and (max-width: ${(3*columnWidth)-1}px)`);
+  twoColumnMedia.onchange = (e) => {
+      if (e.matches) {
+        munberOfColumns = 2;
+      }
+  }
+
+  var oneColumnMedia = window.matchMedia(`(max-width: ${(2*columnWidth) - 1}px)`);
+  oneColumnMedia.onchange = (e) => {
+      if (e.matches) {
+        munberOfColumns = 1;
+      }
+  }
+
+  function getNavigationLinksbyColumns(navigationLinks: Link[], munberOfColumns: number): Link[][] {
+
+    let navigationLinksbyColumns: Link[][] = [];
+
+    const columnLinksSize = Math.ceil(navigationLinks.length / munberOfColumns);
+    for (let i = 0; i < navigationLinks.length; i += columnLinksSize) {
+        const columnLinks = navigationLinks.slice(i, i + columnLinksSize);
+        navigationLinksbyColumns = [...navigationLinksbyColumns, columnLinks];
+    }
+
+    return navigationLinksbyColumns;
+  }
 
   function AppendNavigationLinkWithSection(message: NavigationLinkRegisterMessage) {
 
@@ -64,7 +121,7 @@
         case NAVIGATION_LINK: {
           const message = state as NavigationLinkRegisterMessage;
           if (message.section) {
-            AppendNavigationLinkWithSection(message);
+          //  AppendNavigationLinkWithSection(message);
           }
           else {
             navigationLinks = [...navigationLinks, {title: message.title, url: message.url}];
@@ -95,19 +152,40 @@
       {#if (navigationSections.length || navigationLinks.length) }
         <div class="navigation-links">
           {#if navigationSections.length}
-            {#each navigationSections as navigationSection (navigationSection.name) }
+            {#each navigationSections as navigationSection (navigationSection) }
+              {#each navigationSection.links  as columnLinks, i }
+                <div class="navigation-section">
+
+                  {#if navigationSection.name}
+                    {#if (i == 0)}
+                      <span class="navigation-section-name">{navigationSection.name}</span>
+                    {:else}
+                      <span class="navigation-section-name">&nbsp;</span>
+                    {/if}
+
+                    <hr
+                      class:navigation-section-name-divider-full={(i < navigationSection.links.length -1)}
+                      class:navigation-section-name-divider={(i == navigationSection.links.length -1)}
+                    />
+                  {/if}
+
+                  {#each columnLinks as navigationlink (navigationlink.title) }
+                    <a href={navigationlink.url} class="navigation-link">{navigationlink.title}</a>
+                  {/each}
+
+                </div>
+              {/each}
+            {/each}
+          {:else if navigationLinks.length }
+
+            {#each navigationLinksbyColumns as columnLinks, i}
               <div class="navigation-section">
-                <span class="navigation-section-name">{navigationSection.name}</span>
-                <hr class="navigation-section-name-divider"/>
-                {#each navigationSection.links as navigationlink (navigationlink.title) }
+                {#each columnLinks as navigationlink (navigationlink.title) }
                   <a href={navigationlink.url} class="navigation-link">{navigationlink.title}</a>
                 {/each}
               </div>
             {/each}
-          {:else if navigationLinks.length }
-            {#each navigationLinks as navigationlink (navigationlink.title) }
-              <a href={navigationlink.url} class="navigation-link">{navigationlink.title}</a>
-            {/each}
+
           {/if}
         </div>
         <hr class="navigation-links-divider" />
@@ -214,12 +292,18 @@
     margin: 0;
   }
 
+  .navigation-section-name-divider-full {
+    width: 100%;
+    margin: 0;
+  }
+
   .navigation-link {
     margin-top: 1.75rem;
     margin-right: 1.75rem;
     color: var(--goa-color-text);
-    width: 13.25rem;
+    /*width: 13.25rem; */
     font-size: var(--fs-base);
+    /*height: calc(2 * var(--fs-base)); */
   }
 
   .default-footer .logo-and-copyright {
