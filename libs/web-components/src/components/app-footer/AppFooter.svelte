@@ -384,7 +384,7 @@
       margin-bottom: 1.5rem;
     }
   }
-  @media (max-width: 59.9rem) {
+  @media (max-width: 62rem) {
     .app-footer-container {
       padding-left: 1rem;
       padding-right: 1rem;
@@ -421,7 +421,6 @@
     }
 
     .navigation-link {
-      min-width: 40rem;
       margin-top: 1.5rem;
       font-size: var(--fs-sm);
     }
