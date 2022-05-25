@@ -18,22 +18,17 @@
   let metaLinks: Link[] = [];
   let navigationLinks: Link[] = [];
   let navigationSections: NavigationSection[] = [
-    {"name":"Section 1", "links":[[{"title":"a", "url": "a.html"}, {"title":"Emergencies and public safety", "url": "b.html"}, {"title":"Government", "url": "c.html"}, {"title":"d", "url": "d.html"}, {"title":"e", "url": "e.html"}, {"title":"f", "url": "f.html"}]]},
-    {"name":"Section 2", "links":[[{"title":"Instagram", "url": "m.html"}, {"title":"n", "url": "n.html"}, {"title":"Twitter", "url": "o.html"}, {"title":"p", "url": "p.html"}]]},
-    {"name":"Section 3", "links":[[{"title":"1", "url": "1.html"}, {"title":"2", "url": "2.html"}, {"title":"3", "url": "3.html"}, {"title":"4", "url": "4.html"}], [{"title":"5", "url": "5.html"}, {"title":"6", "url": "6.html"}, {"title":"7", "url": "7.html"}, {"title":"8", "url": "8.html"}]]},
+    {"name":"Section 1", "links":[{"title":"a", "url": "a.html"}, {"title":"Emergencies and public safety", "url": "b.html"}, {"title":"Government", "url": "c.html"}, {"title":"d", "url": "d.html"}, {"title":"e", "url": "e.html"}, {"title":"f", "url": "f.html"}]},
+    {"name":"Section 2", "links":[{"title":"Instagram", "url": "m.html"}, {"title":"n", "url": "n.html"}, {"title":"Twitter", "url": "o.html"}, {"title":"p", "url": "p.html"}]},
+    {"name":"Section 3", "isMultiColumn": true, "links":[{"title":"1", "url": "1.html"}, {"title":"2", "url": "2.html"}, {"title":"3", "url": "3.html"}, {"title":"4", "url": "4.html"}, {"title":"5", "url": "5.html"}, {"title":"6", "url": "6.html"}, {"title":"7", "url": "7.html"}, {"title":"8", "url": "8.html"}]}
   ];
-/*
-  let navigationSections1: NavigationSection[] = [
-    {"name":"", "links":[[{"title":"1", "url": "1.html"}, {"title":"2", "url": "2.html"}, {"title":"3", "url": "3.html"}, {"title":"4", "url": "4.html"}, {"title":"5", "url": "5.html"}, {"title":"6", "url": "6.html"}, {"title":"7", "url": "7.html"}, {"title":"8", "url": "8.html"}]]},
-    {"name":"", "links":[[{"title":"a", "url": "a.html"}, {"title":"Emergencies and public safety", "url": "b.html"}, {"title":"Government", "url": "c.html"}, {"title":"d", "url": "d.html"}, {"title":"e", "url": "e.html"}, {"title":"f", "url": "f.html"}]]},
-    {"name":"", "links":[[{"title":"Instagram", "url": "m.html"}, {"title":"n", "url": "n.html"}, {"title":"Twitter", "url": "o.html"}, {"title":"p", "url": "p.html"}]]}
-  ];
-*/
 
+  const columnWidth: number = 320;
   const maxContentWidth: number = 960;
-  const columnWidth: number = 240;
-  let munberOfColumns: number = 4;
+  const maxViewPoint: number = Math.floor(maxContentWidth / columnWidth);
+  let numberOfColumns: number = maxContentWidth/columnWidth;
   let navigationLinksbyColumns: Link[][] = [];
+  let navigationSectionsToDisplay: NavigationSection[] = [];
 
   $: isDefaultFooter = (!metaLinks.length && !navigationLinks.length && !navigationSections.length);
   $: isMetaLinksOnlyFooter = (metaLinks.length && !navigationLinks.length && !navigationSections.length);
@@ -41,34 +36,49 @@
   $: isNavigationSectionsOnlyFooter = (!metaLinks.length && !navigationLinks.length && navigationSections.length);
   $: isMetaAndNavigationLinksFooter = (metaLinks.length && navigationLinks.length && !navigationSections.length);
   $: isMetaAndNavigationSectionsFooter = (metaLinks.length && !navigationLinks.length && navigationSections.length);
-  $: navigationLinksbyColumns = getNavigationLinksbyColumns(navigationLinks, munberOfColumns);
+  $: navigationLinksbyColumns = getNavigationLinksbyColumns(navigationLinks, numberOfColumns);
+  $: navigationSectionsToDisplay = getNavigationSectionsToDisplay(navigationSections, numberOfColumns);
 
-  var fourColumnMedia = window.matchMedia(`(min-width: ${4*columnWidth}px)`);
-  fourColumnMedia.onchange = (e) => {
-      if (e.matches) {
-        munberOfColumns = 4;
-      }
-  }
-
-  var threeColumnMedia = window.matchMedia(`(min-width: ${3*columnWidth}px) and (max-width: ${(4*columnWidth)-1}px)`);
+  var threeColumnMedia = window.matchMedia(`(min-width: ${3*columnWidth}px)`);
   threeColumnMedia.onchange = (e) => {
       if (e.matches) {
-        munberOfColumns = 3;
+        numberOfColumns = 3;
       }
   }
 
   var twoColumnMedia = window.matchMedia(`(min-width: ${2*columnWidth}px) and (max-width: ${(3*columnWidth)-1}px)`);
   twoColumnMedia.onchange = (e) => {
       if (e.matches) {
-        munberOfColumns = 2;
+        numberOfColumns = 2;
       }
   }
 
   var oneColumnMedia = window.matchMedia(`(max-width: ${(2*columnWidth) - 1}px)`);
   oneColumnMedia.onchange = (e) => {
       if (e.matches) {
-        munberOfColumns = 1;
+        numberOfColumns = 1;
       }
+  }
+
+  function getNavigationSectionsToDisplay(navigationSections: NavigationSection[], munberOfColumns: number) : NavigationSection[] {
+
+    let navigationSectionsToDisplay: NavigationSection[] = [];
+
+    navigationSections.forEach(navigationSection => {
+
+      let linksCount = navigationSection.links.length;
+
+      if ((numberOfColumns == 3) && (navigationSection.isMultiColumn)) {
+        navigationSectionsToDisplay.push({ name: navigationSection.name, isMultiColumn: true, links: navigationSection.links.slice(0, linksCount/2) });
+        navigationSectionsToDisplay.push({ name: "", links: navigationSection.links.slice((linksCount/2)) });
+      }
+      else {
+        navigationSectionsToDisplay.push(navigationSection);
+      }
+
+    });
+
+    return navigationSectionsToDisplay;
   }
 
   function getNavigationLinksbyColumns(navigationLinks: Link[], munberOfColumns: number): Link[][] {
@@ -152,29 +162,25 @@
       {#if (navigationSections.length || navigationLinks.length) }
         <div class="navigation-links">
           {#if navigationSections.length}
-            {#each navigationSections as navigationSection (navigationSection) }
-              {#each navigationSection.links  as columnLinks, i }
-                <div class="navigation-section">
+            {#each navigationSectionsToDisplay as navigationSection (navigationSection) }
+              <div class="navigation-section">
 
-                  {#if navigationSection.name}
-                    {#if (i == 0)}
-                      <span class="navigation-section-name">{navigationSection.name}</span>
-                    {:else}
-                      <span class="navigation-section-name">&nbsp;</span>
-                    {/if}
+                {#if navigationSection.name}
+                  <span class="navigation-section-name">{navigationSection.name}</span>
+                  <hr
+                    class:navigation-section-name-divider-full={((3 == numberOfColumns) && navigationSection.isMultiColumn)}
+                    class:navigation-section-name-divider={!((3 == numberOfColumns) && navigationSection.isMultiColumn)}
+                  />
+                {:else}
+                  <span class="navigation-section-name">&nbsp;</span>
+                  <hr class="navigation-section-name-divider"/>
+                {/if}
 
-                    <hr
-                      class:navigation-section-name-divider-full={(i < navigationSection.links.length -1)}
-                      class:navigation-section-name-divider={(i == navigationSection.links.length -1)}
-                    />
-                  {/if}
+                {#each navigationSection.links as navigationlink (navigationlink.title) }
+                  <a href={navigationlink.url} class="navigation-link">{navigationlink.title}</a>
+                {/each}
 
-                  {#each columnLinks as navigationlink (navigationlink.title) }
-                    <a href={navigationlink.url} class="navigation-link">{navigationlink.title}</a>
-                  {/each}
-
-                </div>
-              {/each}
+              </div>
             {/each}
           {:else if navigationLinks.length }
 
@@ -288,12 +294,11 @@
   }
 
   .navigation-section-name-divider {
-    width: 75%;
     margin: 0;
+    margin-right: 1.75rem;
   }
 
   .navigation-section-name-divider-full {
-    width: 100%;
     margin: 0;
   }
 
