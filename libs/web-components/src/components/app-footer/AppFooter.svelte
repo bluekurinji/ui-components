@@ -18,15 +18,14 @@
   let metaLinks: Link[] = [];
   let navigationLinks: Link[] = [];
   let navigationSections: NavigationSection[] = [
-    {"name":"Section 1", "links":[{"title":"a", "url": "a.html"}, {"title":"Emergencies and public safety", "url": "b.html"}, {"title":"Government", "url": "c.html"}, {"title":"d", "url": "d.html"}, {"title":"e", "url": "e.html"}, {"title":"f", "url": "f.html"}]},
-    {"name":"Section 2", "links":[{"title":"Instagram", "url": "m.html"}, {"title":"n", "url": "n.html"}, {"title":"Twitter", "url": "o.html"}, {"title":"p", "url": "p.html"}]},
-    {"name":"Section 3", "isMultiColumn": true, "links":[{"title":"1", "url": "1.html"}, {"title":"2", "url": "2.html"}, {"title":"3", "url": "3.html"}, {"title":"4", "url": "4.html"}, {"title":"5", "url": "5.html"}, {"title":"6", "url": "6.html"}, {"title":"7", "url": "7.html"}, {"title":"8", "url": "8.html"}]}
+    {"name":"Section 2", "isMultiColumn": true, "links":[{"title":"1", "url": "1.html"}, {"title":"2", "url": "2.html"}, {"title":"3", "url": "3.html"}, {"title":"4", "url": "4.html"}, {"title":"5", "url": "5.html"}, {"title":"6", "url": "6.html"}, {"title":"7", "url": "7.html"}, {"title":"8", "url": "8.html"}]},
+    {"name":"Section 1", "links":[{"title":"a", "url": "a.html"}, {"title":"Emergencies and public safety", "url": "b.html"}, {"title":"Government", "url": "c.html"}, {"title":"d", "url": "d.html"}, {"title":"e", "url": "e.html"}, {"title":"f", "url": "f.html"}]}
   ];
 
   const columnWidth: number = 320;
-  const maxContentWidth: number = 960;
-  const maxViewPoint: number = Math.floor(maxContentWidth / columnWidth);
-  let numberOfColumns: number = maxContentWidth/columnWidth;
+  const maxDesktopContentWidth: number = 960;
+  const maxNumberOfColumnsInDesktop: number = Math.floor(maxDesktopContentWidth / columnWidth);
+  let numberOfColumns: number = maxDesktopContentWidth/columnWidth;
   let navigationLinksbyColumns: Link[][] = [];
   let navigationSectionsToDisplay: NavigationSection[] = [];
 
@@ -60,7 +59,18 @@
       }
   }
 
-  function getNavigationSectionsToDisplay(navigationSections: NavigationSection[], munberOfColumns: number) : NavigationSection[] {
+  function isFullLengthNavigationSectionNameDividerRequired(sectionIndex: number, navigationSection: NavigationSection): boolean {
+
+    if ((navigationSection.isMultiColumn) && (numberOfColumns == maxNumberOfColumnsInDesktop)) {
+      return true;
+    }
+    else {
+      return (((sectionIndex+1) % numberOfColumns) == 0);
+    }
+
+  }
+
+  function getNavigationSectionsToDisplay(navigationSections: NavigationSection[], numberOfColumns: number) : NavigationSection[] {
 
     let navigationSectionsToDisplay: NavigationSection[] = [];
 
@@ -162,18 +172,20 @@
       {#if (navigationSections.length || navigationLinks.length) }
         <div class="navigation-links">
           {#if navigationSections.length}
-            {#each navigationSectionsToDisplay as navigationSection (navigationSection) }
+            {#each navigationSectionsToDisplay as navigationSection, index (navigationSection) }
               <div class="navigation-section">
 
                 {#if navigationSection.name}
                   <span class="navigation-section-name">{navigationSection.name}</span>
                   <hr
-                    class:navigation-section-name-divider-full={((3 == numberOfColumns) && navigationSection.isMultiColumn)}
+                    class:navigation-section-name-divider-full={((3 == numberOfColumns) && navigationSection.isMultiColumn) || (((index+1) % numberOfColumns) == 0)}
                     class:navigation-section-name-divider={!((3 == numberOfColumns) && navigationSection.isMultiColumn)}
                   />
                 {:else}
-                  <span class="navigation-section-name">&nbsp;</span>
-                  <hr class="navigation-section-name-divider"/>
+                  <hr
+                    class:navigation-section-name-divider-full={(((index+1) % numberOfColumns) == 0)}
+                    class:navigation-section-name-divider={(((index+1) % numberOfColumns) != 0)}
+                  />
                 {/if}
 
                 {#each navigationSection.links as navigationlink (navigationlink.title) }
@@ -367,7 +379,7 @@
     margin-bottom: 1.75rem;
   }
 
- .goa-copyright {
+  .goa-copyright {
     margin-top: 0;
     margin-bottom: 0;
     font-size: var(--fs-base);
@@ -384,12 +396,14 @@
       margin-bottom: 1.5rem;
     }
   }
+
   @media (max-width: 62rem) {
     .app-footer-container {
       padding-left: 1rem;
       padding-right: 1rem;
     }
   }
+
   @media (max-width: 40rem) {
 
     .logo-and-copyright {
