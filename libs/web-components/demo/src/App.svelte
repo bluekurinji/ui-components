@@ -612,7 +612,7 @@
 
   </goa-page-block>
 
-
+<!--
 <goa-app-footer>
 
   <goa-meta-link  url="privacy.html" title="Privacy" />
@@ -640,7 +640,7 @@
 
 
 </goa-app-footer>
-<!--
+-->
 <goa-app-footer>
 
   <goa-meta-link  url="privacy.html" title="Privacy" />
@@ -668,7 +668,7 @@
 
 
 </goa-app-footer>
--->
+
   </main>
 
 <style>

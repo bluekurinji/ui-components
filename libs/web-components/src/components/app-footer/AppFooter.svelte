@@ -17,17 +17,11 @@
   let ctx: ContextStore;
   let metaLinks: Link[] = [];
   let navigationLinks: Link[] = [];
-  let navigationSections: NavigationSection[] = []; /*[
-    {"name":"Section 2", "isMultiColumn": true, "links":[{"title":"1", "url": "1.html"}, {"title":"2", "url": "2.html"}, {"title":"3", "url": "3.html"}, {"title":"4", "url": "4.html"}, {"title":"5", "url": "5.html"}, {"title":"6", "url": "6.html"}, {"title":"7", "url": "7.html"}, {"title":"8", "url": "8.html"}]},
-    {"name":"Section 1", "links":[{"title":"a", "url": "a.html"}, {"title":"Emergencies and public safety", "url": "b.html"}, {"title":"Government", "url": "c.html"}, {"title":"d", "url": "d.html"}, {"title":"e", "url": "e.html"}, {"title":"f", "url": "f.html"}]}
-  ];*/
+  let navigationSections: NavigationSection[] = [];
 
   const columnWidth: number = 320;
   const maxDesktopContentWidth: number = 960;
-  const maxNumberOfColumnsInDesktop: number = Math.floor(maxDesktopContentWidth / columnWidth);
   let numberOfColumns: number = maxDesktopContentWidth/columnWidth;
-  let navigationLinksbyColumns: Link[][] = [];
-  let navigationSectionsToDisplay: NavigationSection[] = [];
 
   $: isDefaultFooter = (!metaLinks.length && !navigationLinks.length && !navigationSections.length);
   $: isMetaLinksOnlyFooter = (metaLinks.length && !navigationLinks.length && !navigationSections.length);
@@ -35,8 +29,6 @@
   $: isNavigationSectionsOnlyFooter = (!metaLinks.length && !navigationLinks.length && navigationSections.length);
   $: isMetaAndNavigationLinksFooter = (metaLinks.length && navigationLinks.length && !navigationSections.length);
   $: isMetaAndNavigationSectionsFooter = (metaLinks.length && !navigationLinks.length && navigationSections.length);
-  $: navigationLinksbyColumns = getNavigationLinksbyColumns(navigationLinks, numberOfColumns);
-  $: navigationSectionsToDisplay = getNavigationSectionsToDisplay(navigationSections, numberOfColumns);
 
   var threeColumnMedia = window.matchMedia(`(min-width: ${3*columnWidth}px)`);
   threeColumnMedia.onchange = (e) => {
@@ -59,49 +51,18 @@
       }
   }
 
-  function isFullLengthNavigationSectionNameDividerRequired(sectionIndex: number, navigationSection: NavigationSection): boolean {
+  function isTwoColumnSection(navigationSectionIndex: number) {
 
-    if ((navigationSection.isMultiColumn) && (numberOfColumns == maxNumberOfColumnsInDesktop)) {
+    const minDifferenceToFindLargerSection: number = 4;
+
+    if (navigationSections.length != 2) return false;
+
+    if ((navigationSections[0].links.length >= navigationSections[1].links.length + minDifferenceToFindLargerSection) && (navigationSectionIndex == 0))
       return true;
-    }
-    else {
-      return (((sectionIndex+1) % numberOfColumns) == 0);
-    }
-
-  }
-
-  function getNavigationSectionsToDisplay(navigationSections: NavigationSection[], numberOfColumns: number) : NavigationSection[] {
-
-    let navigationSectionsToDisplay: NavigationSection[] = [];
-
-    navigationSections.forEach(navigationSection => {
-
-      let linksCount = navigationSection.links.length;
-
-      if ((numberOfColumns == 3) && (navigationSection.isMultiColumn)) {
-        navigationSectionsToDisplay.push({ name: navigationSection.name, isMultiColumn: true, links: navigationSection.links.slice(0, linksCount/2) });
-        navigationSectionsToDisplay.push({ name: "", links: navigationSection.links.slice((linksCount/2)) });
-      }
-      else {
-        navigationSectionsToDisplay.push(navigationSection);
-      }
-
-    });
-
-    return navigationSectionsToDisplay;
-  }
-
-  function getNavigationLinksbyColumns(navigationLinks: Link[], munberOfColumns: number): Link[][] {
-
-    let navigationLinksbyColumns: Link[][] = [];
-
-    const columnLinksSize = Math.ceil(navigationLinks.length / munberOfColumns);
-    for (let i = 0; i < navigationLinks.length; i += columnLinksSize) {
-        const columnLinks = navigationLinks.slice(i, i + columnLinksSize);
-        navigationLinksbyColumns = [...navigationLinksbyColumns, columnLinks];
-    }
-
-    return navigationLinksbyColumns;
+    else if ((navigationSections[1].links.length >= navigationSections[0].links.length + minDifferenceToFindLargerSection) && (navigationSectionIndex == 1))
+      return true;
+    else
+      return false;
   }
 
   function AppendNavigationLinkWithSection(message: NavigationLinkRegisterMessage) {
@@ -141,7 +102,7 @@
         case NAVIGATION_LINK: {
           const message = state as NavigationLinkRegisterMessage;
           if (message.section) {
-          //  AppendNavigationLinkWithSection(message);
+            AppendNavigationLinkWithSection(message);
           }
           else {
             navigationLinks = [...navigationLinks, {title: message.title, url: message.url}];
@@ -172,36 +133,23 @@
       {#if (navigationSections.length || navigationLinks.length) }
         <div class="navigation-links">
           {#if navigationSections.length}
-            {#each navigationSectionsToDisplay as navigationSection, index (navigationSection) }
-              <div class="navigation-section">
-
-                {#if navigationSection.name}
-                  <span class="navigation-section-name">{navigationSection.name}</span>
-                  <hr
-                    class:navigation-section-name-divider-full={((3 == numberOfColumns) && navigationSection.isMultiColumn) || (((index+1) % numberOfColumns) == 0)}
-                    class:navigation-section-name-divider={!((3 == numberOfColumns) && navigationSection.isMultiColumn)}
-                  />
-                {:else}
-                  <hr
-                    class:navigation-section-name-divider-full={(((index+1) % numberOfColumns) == 0)}
-                    class:navigation-section-name-divider={(((index+1) % numberOfColumns) != 0)}
-                  />
-                {/if}
-
-                {#each navigationSection.links as navigationlink (navigationlink.title) }
-                  <a href={navigationlink.url} class="navigation-link">{navigationlink.title}</a>
-                {/each}
-
-              </div>
+            {#each navigationSections as navigationSection, index (navigationSection) }
+              <section class:one-column-section={!isTwoColumnSection(index)} class:two-columns-section={isTwoColumnSection(index)}>
+                <span class="navigation-section-name">{navigationSection.name}</span>
+                <hr/>
+                <div class="navigation-section-links">
+                  {#each navigationSection.links as navigationlink (navigationlink.title) }
+                    <a href={navigationlink.url} class="navigation-link">{navigationlink.title}</a>
+                  {/each}
+                </div>
+              </section>
             {/each}
           {:else if navigationLinks.length }
-
-              <div class="navigation-section-name-less">
-                {#each navigationLinks as navigationlink (navigationlink.title) }
-                  <a href={navigationlink.url} class="navigation-link">{navigationlink.title}</a>
-                {/each}
-              </div>
-
+            <div class="navigation-section-name-less">
+              {#each navigationLinks as navigationlink (navigationlink.title) }
+                <a href={navigationlink.url} class="navigation-link">{navigationlink.title}</a>
+              {/each}
+            </div>
           {/if}
         </div>
         <hr class="navigation-links-divider" />
@@ -283,16 +231,31 @@
     background-color: var(--color-gray-100);
   }
 
-  .navigation-links, .meta-links, .navigation-section {
+  .navigation-links {
+    flex-direction: row;
+    justify-content: flex-start;
+    text-align: start;
+    column-gap: 1.75rem;
+    display: flex;
+  }
+
+  .one-column-section {
+    flex-grow: 1;
+  }
+
+  .two-columns-section {
+    flex-grow: 2;
+  }
+
+  .two-columns-section .navigation-section-links {
+    column-count: 2;
+    flex-grow: 2;
+  }
+
+  .meta-links {
     text-align: start;
     display: flex;
     flex-flow: wrap;
-  }
-
-  .navigation-section {
-    flex-direction: column;
-    flex: 1 1 0;
-    min-width: 13.25rem;
   }
 
   .navigation-section-name-less {
@@ -307,15 +270,6 @@
     font-weight: var(--fw-regular);
     margin-bottom: 1.75rem;
     margin-top: 1.75rem;
-  }
-
-  .navigation-section-name-divider {
-    margin: 0;
-    margin-right: 1.75rem;
-  }
-
-  .navigation-section-name-divider-full {
-    margin: 0;
   }
 
   .navigation-link {
