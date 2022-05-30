@@ -641,7 +641,7 @@
 
 </goa-app-footer>
 -->
-<goa-app-footer multicolumnsectionnames="Section 2, Section 1">
+<goa-app-footer multicolumnsectionnames="Section 2">
 
   <goa-meta-link  url="privacy.html" title="Privacy" />
   <goa-meta-link  url="disclaimer.html" title="Disclaimer" />

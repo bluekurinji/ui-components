@@ -21,9 +21,6 @@
   let navigationSections: NavigationSection[] = [];
   let multiColumnSectionNamesArray: string[] = [];
 
-  const maxDesktopContentWidth: number = 960;
-  let isDesktopViewPort: boolean = true;
-
   $: isDefaultFooter = (!metaLinks.length && !navigationLinks.length && !navigationSections.length);
   $: isMetaLinksOnlyFooter = (metaLinks.length && !navigationLinks.length && !navigationSections.length);
   $: isNavigationLinksOnlyFooter = (!metaLinks.length && navigationLinks.length && !navigationSections.length);
@@ -31,25 +28,6 @@
   $: isMetaAndNavigationLinksFooter = (metaLinks.length && navigationLinks.length && !navigationSections.length);
   $: isMetaAndNavigationSectionsFooter = (metaLinks.length && !navigationLinks.length && navigationSections.length);
   $: multiColumnSectionNamesArray = multicolumnsectionnames.split(",").map(name => name.trim());
-
-  var maxDesktopContentWidthMedia = window.matchMedia(`(min-width: ${maxDesktopContentWidth}px)`);
-  maxDesktopContentWidthMedia.onchange = (e) => {
-      if (e.matches) {
-        isDesktopViewPort = true;
-      }
-  }
-
-  var notMaxDesktopContentWidthMedia = window.matchMedia(`(max-width: ${maxDesktopContentWidth-1}px)`);
-  notMaxDesktopContentWidthMedia.onchange = (e) => {
-      if (e.matches) {
-        isDesktopViewPort = false;
-      }
-  }
-
-  function isMultiColumnSection(navigationSectionName: string, isDesktopViewPort: boolean) {
-    if (!isDesktopViewPort) return false;
-    return multiColumnSectionNamesArray.includes(navigationSectionName);
-  }
 
   function AppendNavigationLinkWithSection(message: NavigationLinkRegisterMessage) {
 
@@ -121,9 +99,7 @@
           {#if navigationSections.length}
             {#each navigationSections as navigationSection (navigationSection) }
 
-              <section
-                class:one-column-section={!isMultiColumnSection(navigationSection.name, isDesktopViewPort)}
-                class:two-columns-section={isMultiColumnSection(navigationSection.name, isDesktopViewPort)}>
+              <section class:multi-section-column={multiColumnSectionNamesArray.includes(navigationSection.name)}>
 
                 <span class="navigation-section-name">{navigationSection.name}</span>
                 <hr/>
@@ -232,15 +208,15 @@
     flex-direction: unset;
   }
 
-  .one-column-section {
+  .navigation-links section {
     flex-grow: 1;
   }
 
-  .two-columns-section {
+  .navigation-links section.multi-section-column {
     flex-grow: 2;
   }
 
-  .two-columns-section .navigation-section-links {
+  .multi-section-column .navigation-section-links {
     column-count: 2;
   }
 
@@ -432,6 +408,14 @@
   @media (max-width: 59.75rem) {
     .navigation-section-name-less {
       column-count: 2;
+    }
+
+    .navigation-links section.multi-section-column {
+      flex-grow: 1;
+    }
+
+    .multi-section-column .navigation-section-links {
+      column-count: 1;
     }
   }
 
