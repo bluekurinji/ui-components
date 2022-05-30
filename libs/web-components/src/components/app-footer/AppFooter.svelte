@@ -51,7 +51,9 @@
       }
   }
 
-  function isTwoColumnSection(navigationSectionIndex: number) {
+  function isTwoColumnSection(navigationSectionIndex: number, numberOfColumns: number) {
+
+    if (numberOfColumns < 3) return false;
 
     const minDifferenceToFindLargerSection: number = 4;
 
@@ -134,7 +136,7 @@
         <div class="navigation-links">
           {#if navigationSections.length}
             {#each navigationSections as navigationSection, index (navigationSection) }
-              <section class:one-column-section={!isTwoColumnSection(index)} class:two-columns-section={isTwoColumnSection(index)}>
+              <section class:one-column-section={!isTwoColumnSection(index, numberOfColumns)} class:two-columns-section={isTwoColumnSection(index, numberOfColumns)}>
                 <span class="navigation-section-name">{navigationSection.name}</span>
                 <hr/>
                 <div class="navigation-section-links">
@@ -145,7 +147,7 @@
               </section>
             {/each}
           {:else if navigationLinks.length }
-            <div class="navigation-section-name-less">
+            <div class="navigation-section-name-less column-{numberOfColumns}">
               {#each navigationLinks as navigationlink (navigationlink.title) }
                 <a href={navigationlink.url} class="navigation-link">{navigationlink.title}</a>
               {/each}
@@ -249,7 +251,6 @@
 
   .two-columns-section .navigation-section-links {
     column-count: 2;
-    flex-grow: 2;
   }
 
   .meta-links {
@@ -259,9 +260,20 @@
   }
 
   .navigation-section-name-less {
-    column-count: 4;
     column-gap: 1.75rem;
     width: 100%;
+  }
+
+  .navigation-links .column-1 {
+    column-count: 1;
+  }
+
+  .navigation-links .column-2 {
+    column-count: 2;
+  }
+
+  .navigation-links .column-3 {
+    column-count: 3;
   }
 
   .navigation-section-name {

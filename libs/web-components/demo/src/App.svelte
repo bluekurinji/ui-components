@@ -612,7 +612,6 @@
 
   </goa-page-block>
 
-<!--
 <goa-app-footer>
 
   <goa-meta-link  url="privacy.html" title="Privacy" />
@@ -640,20 +639,13 @@
 
 
 </goa-app-footer>
--->
+<!--
 <goa-app-footer>
 
   <goa-meta-link  url="privacy.html" title="Privacy" />
   <goa-meta-link  url="disclaimer.html" title="Disclaimer" />
   <goa-meta-link  url="accessibility.html" title="Accessibility" />
   <goa-meta-link  url="using-alberta.html" title="Using Alberta.ca" />
-
-
-  <goa-navigation-link section="Section 1" url="a.html" title="Arts and culture" />
-  <goa-navigation-link section="Section 1"  url="b.html" title="Education and training" />
-  <goa-navigation-link section="Section 1"  url="c.html" title="Family and social supports" />
-  <goa-navigation-link section="Section 1"  url="d.html" title="Housing and community" />
-  <goa-navigation-link section="Section 1"  url="e.html" title="Life events" />
 
   <goa-navigation-link section="Section 2"  url="f.html" title="Business and economy" />
   <goa-navigation-link section="Section 2"  url="g.html" title="Emergencies and public safety" />
@@ -666,9 +658,14 @@
   <goa-navigation-link section="Section 2"  url="snapchat.html" title="Snapchat" />
   <goa-navigation-link section="Section 2"  url="twitter.html" title="Twitter" />
 
+  <goa-navigation-link section="Section 1" url="a.html" title="Arts and culture" />
+  <goa-navigation-link section="Section 1"  url="b.html" title="Education and training" />
+  <goa-navigation-link section="Section 1"  url="c.html" title="Family and social supports" />
+  <goa-navigation-link section="Section 1"  url="d.html" title="Housing and community" />
+  <goa-navigation-link section="Section 1"  url="e.html" title="Life events" />
 
 </goa-app-footer>
-
+-->
   </main>
 
 <style>
