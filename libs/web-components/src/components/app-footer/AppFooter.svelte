@@ -17,10 +17,10 @@
   let ctx: ContextStore;
   let metaLinks: Link[] = [];
   let navigationLinks: Link[] = [];
-  let navigationSections: NavigationSection[] = [
+  let navigationSections: NavigationSection[] = []; /*[
     {"name":"Section 2", "isMultiColumn": true, "links":[{"title":"1", "url": "1.html"}, {"title":"2", "url": "2.html"}, {"title":"3", "url": "3.html"}, {"title":"4", "url": "4.html"}, {"title":"5", "url": "5.html"}, {"title":"6", "url": "6.html"}, {"title":"7", "url": "7.html"}, {"title":"8", "url": "8.html"}]},
     {"name":"Section 1", "links":[{"title":"a", "url": "a.html"}, {"title":"Emergencies and public safety", "url": "b.html"}, {"title":"Government", "url": "c.html"}, {"title":"d", "url": "d.html"}, {"title":"e", "url": "e.html"}, {"title":"f", "url": "f.html"}]}
-  ];
+  ];*/
 
   const columnWidth: number = 320;
   const maxDesktopContentWidth: number = 960;
@@ -196,13 +196,11 @@
             {/each}
           {:else if navigationLinks.length }
 
-            {#each navigationLinksbyColumns as columnLinks, i}
-              <div class="navigation-section">
-                {#each columnLinks as navigationlink (navigationlink.title) }
+              <div class="navigation-section-name-less">
+                {#each navigationLinks as navigationlink (navigationlink.title) }
                   <a href={navigationlink.url} class="navigation-link">{navigationlink.title}</a>
                 {/each}
               </div>
-            {/each}
 
           {/if}
         </div>
@@ -297,6 +295,12 @@
     min-width: 13.25rem;
   }
 
+  .navigation-section-name-less {
+    column-count: 4;
+    column-gap: 1.75rem;
+    width: 100%;
+  }
+
   .navigation-section-name {
     font-size: var(--fs-xl);
     line-height: var(--lh-lg);
@@ -315,12 +319,10 @@
   }
 
   .navigation-link {
-    margin-top: 1.75rem;
-    margin-right: 1.75rem;
+    padding-top: 1.75rem;
     color: var(--goa-color-text);
-    /*width: 13.25rem; */
     font-size: var(--fs-base);
-    /*height: calc(2 * var(--fs-base)); */
+    display: block;
   }
 
   .default-footer .logo-and-copyright {
