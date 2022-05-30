@@ -9,6 +9,7 @@
   import { META_LINK, NAVIGATION_LINK, MetaLinkRegisterMessage, NavigationLinkRegisterMessage } from "./types";
 
   export let id: string = "goa-app-footer-id";
+  export let multicolumnsectionnames: string = "";
   export let copyrighturl: string = "#";
   export let appurl: string = "#";
   export let title: string = "";
@@ -18,10 +19,10 @@
   let metaLinks: Link[] = [];
   let navigationLinks: Link[] = [];
   let navigationSections: NavigationSection[] = [];
+  let multiColumnSectionNamesArray: string[] = [];
 
-  const columnWidth: number = 320;
   const maxDesktopContentWidth: number = 960;
-  let numberOfColumns: number = maxDesktopContentWidth/columnWidth;
+  let isDesktopViewPort: boolean = true;
 
   $: isDefaultFooter = (!metaLinks.length && !navigationLinks.length && !navigationSections.length);
   $: isMetaLinksOnlyFooter = (metaLinks.length && !navigationLinks.length && !navigationSections.length);
@@ -29,42 +30,25 @@
   $: isNavigationSectionsOnlyFooter = (!metaLinks.length && !navigationLinks.length && navigationSections.length);
   $: isMetaAndNavigationLinksFooter = (metaLinks.length && navigationLinks.length && !navigationSections.length);
   $: isMetaAndNavigationSectionsFooter = (metaLinks.length && !navigationLinks.length && navigationSections.length);
+  $: multiColumnSectionNamesArray = multicolumnsectionnames.split(",").map(name => name.trim());
 
-  var threeColumnMedia = window.matchMedia(`(min-width: ${3*columnWidth}px)`);
-  threeColumnMedia.onchange = (e) => {
+  var maxDesktopContentWidthMedia = window.matchMedia(`(min-width: ${maxDesktopContentWidth}px)`);
+  maxDesktopContentWidthMedia.onchange = (e) => {
       if (e.matches) {
-        numberOfColumns = 3;
+        isDesktopViewPort = true;
       }
   }
 
-  var twoColumnMedia = window.matchMedia(`(min-width: ${2*columnWidth}px) and (max-width: ${(3*columnWidth)-1}px)`);
-  twoColumnMedia.onchange = (e) => {
+  var notMaxDesktopContentWidthMedia = window.matchMedia(`(max-width: ${maxDesktopContentWidth-1}px)`);
+  notMaxDesktopContentWidthMedia.onchange = (e) => {
       if (e.matches) {
-        numberOfColumns = 2;
+        isDesktopViewPort = false;
       }
   }
 
-  var oneColumnMedia = window.matchMedia(`(max-width: ${(2*columnWidth) - 1}px)`);
-  oneColumnMedia.onchange = (e) => {
-      if (e.matches) {
-        numberOfColumns = 1;
-      }
-  }
-
-  function isTwoColumnSection(navigationSectionIndex: number, numberOfColumns: number) {
-
-    if (numberOfColumns < 3) return false;
-
-    const minDifferenceToFindLargerSection: number = 4;
-
-    if (navigationSections.length != 2) return false;
-
-    if ((navigationSections[0].links.length >= navigationSections[1].links.length + minDifferenceToFindLargerSection) && (navigationSectionIndex == 0))
-      return true;
-    else if ((navigationSections[1].links.length >= navigationSections[0].links.length + minDifferenceToFindLargerSection) && (navigationSectionIndex == 1))
-      return true;
-    else
-      return false;
+  function isMultiColumnSection(navigationSectionName: string, isDesktopViewPort: boolean) {
+    if (!isDesktopViewPort) return false;
+    return multiColumnSectionNamesArray.includes(navigationSectionName);
   }
 
   function AppendNavigationLinkWithSection(message: NavigationLinkRegisterMessage) {
@@ -135,8 +119,12 @@
       {#if (navigationSections.length || navigationLinks.length) }
         <div class="navigation-links">
           {#if navigationSections.length}
-            {#each navigationSections as navigationSection, index (navigationSection) }
-              <section class:one-column-section={!isTwoColumnSection(index, numberOfColumns)} class:two-columns-section={isTwoColumnSection(index, numberOfColumns)}>
+            {#each navigationSections as navigationSection (navigationSection) }
+
+              <section
+                class:one-column-section={!isMultiColumnSection(navigationSection.name, isDesktopViewPort)}
+                class:two-columns-section={isMultiColumnSection(navigationSection.name, isDesktopViewPort)}>
+
                 <span class="navigation-section-name">{navigationSection.name}</span>
                 <hr/>
                 <div class="navigation-section-links">
@@ -144,10 +132,12 @@
                     <a href={navigationlink.url} class="navigation-link">{navigationlink.title}</a>
                   {/each}
                 </div>
+
               </section>
+
             {/each}
           {:else if navigationLinks.length }
-            <div class="navigation-section-name-less column-{numberOfColumns}">
+            <div class="navigation-section-name-less">
               {#each navigationLinks as navigationlink (navigationlink.title) }
                 <a href={navigationlink.url} class="navigation-link">{navigationlink.title}</a>
               {/each}
@@ -239,6 +229,7 @@
     text-align: start;
     column-gap: 1.75rem;
     display: flex;
+    flex-direction: unset;
   }
 
   .one-column-section {
@@ -262,17 +253,6 @@
   .navigation-section-name-less {
     column-gap: 1.75rem;
     width: 100%;
-  }
-
-  .navigation-links .column-1 {
-    column-count: 1;
-  }
-
-  .navigation-links .column-2 {
-    column-count: 2;
-  }
-
-  .navigation-links .column-3 {
     column-count: 3;
   }
 
@@ -403,7 +383,7 @@
     }
 
     .navigation-link {
-      margin-top: 1.5rem;
+      padding-top: 1.5rem;
       font-size: var(--fs-sm);
     }
 
@@ -440,5 +420,24 @@
       align-items: flex-start;
     }
 
+    .navigation-links {
+      flex-direction: column;
+    }
+
+    .navigation-links section {
+      margin-top: 2.25rem;
+    }
+  }
+
+  @media (max-width: 59.75rem) {
+    .navigation-section-name-less {
+      column-count: 2;
+    }
+  }
+
+  @media (max-width: 39.75rem) {
+    .navigation-section-name-less {
+      column-count: 1;
+    }
   }
 </style>
