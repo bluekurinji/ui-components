@@ -1,6 +1,9 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
@@ -25,13 +28,16 @@ import { MicrositeHeaderComponent } from './microsite-header/microsite-header.co
 import { ContainerComponent } from './container/container.component';
 import { SkeletonComponent } from './skeleton/skeleton.component';
 import { FormItemComponent } from './form-item/form-item.component';
+import { InputDirective } from './input.directive';
 
 @NgModule({
-  declarations: [AppComponent, InputComponentComponent, ButtonComponentComponent, NavigationLinkComponent, TextAreaComponent, CheckboxComponent, RadioComponent, DropdownComponent, ModalComponent, AppFooterComponent, BadgeComponent, CalloutComponent, ChipComponent, CircularProgressComponent, HeroBannerComponent, AppHeaderComponent, MicrositeHeaderComponent, ContainerComponent, SkeletonComponent, FormItemComponent],
+  declarations: [AppComponent, InputComponentComponent, ButtonComponentComponent, NavigationLinkComponent, TextAreaComponent, CheckboxComponent, RadioComponent, DropdownComponent, ModalComponent, AppFooterComponent, BadgeComponent, CalloutComponent, ChipComponent, CircularProgressComponent, HeroBannerComponent, AppHeaderComponent, MicrositeHeaderComponent, ContainerComponent, SkeletonComponent, FormItemComponent, InputDirective],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NoopAnimationsModule
+    NoopAnimationsModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -1,7 +1,38 @@
+<form (ngSubmit)="onSubmit()" #heroForm="ngForm">
+  Favorite Color1: <input name="favoriteColor1" [(ngModel)]="favoriteColor1" />
+  <br />
+  <br />
+  Favorite Color2:
+  <goa-input
+    name="favoriteColor2"
+    (_change)="onInputChangeEvent($event)"
+    [(ngModel)]="favoriteColor2"
+  ></goa-input>
+</form>
+
+<br />
+favoriteColor1 is {{ favoriteColor1 }}
+<br />
+favoriteColor2 is {{ favoriteColor2 }}
+
+<form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+  <br />
+  <br />
+  <goa-input
+    width="100%"
+    name="favoriteColor3"
+    formControlName="favoriteColor3"
+  ></goa-input>
+
+  <br />
+  Form : {{ this.profileForm.value | json }}
+</form>
+
 <h3>Basic</h3>
 <goa-input
   id="foo"
   name="foo"
+  value="abcd"
   (_change)="onInputChangeEvent($event)"
 ></goa-input>
 

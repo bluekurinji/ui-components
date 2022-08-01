@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'abgov-input-component',
@@ -7,7 +8,19 @@ import { Component } from '@angular/core';
 })
 export class InputComponentComponent {
 
-  constructor() { }
+  favoriteColor1 = 'ABCD1';
+  favoriteColor2 = 'ABCD2';
+
+  profileForm = this.fb.group({
+    favoriteColor3: ['']
+  });
+
+  onSubmit() {
+    console.warn(console.log(this.favoriteColor1));
+    console.warn(console.log(this.favoriteColor2));
+  }
+
+  constructor(private fb: FormBuilder) { }
 
   onInputChangeEvent(event: any) {
     console.log('onEvent', event.detail);
