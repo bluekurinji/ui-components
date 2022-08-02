@@ -5,7 +5,7 @@ export default function Callout() {
   return (
     <>
       <h3>Emergency</h3>
-      <GoACallout type="emergency" heading="Emergency callout">
+      <GoACallout type="emergency">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
       </GoACallout>
 

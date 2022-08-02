@@ -42,7 +42,7 @@ export class InputDirective implements ControlValueAccessor {
   }
 
   @HostListener('_change', ['$event.detail'])
-  listenForValueChange(detail: any) {
+  listenForValueChange(detail: { value: string; }) {
     this.value = detail.value;
   }
 
