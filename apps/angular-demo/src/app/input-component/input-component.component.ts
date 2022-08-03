@@ -12,7 +12,7 @@ export class InputComponentComponent {
   favoriteColor2 = 'ABCD2';
 
   profileForm = this.fb.group({
-    favoriteColor3: ['']
+    favoriteColor3: ['ABCD3']
   });
 
   onSubmit() {
@@ -23,7 +23,7 @@ export class InputComponentComponent {
   constructor(private fb: FormBuilder) { }
 
   onInputChangeEvent(event: any) {
-    console.log('onEvent', event.detail);
+    console.log('onEvent', event);
   }
 
   handleTrailingIconClick() {

@@ -1,0 +1,13 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "npm",
+      "script": "build:angular-components",
+      "group": "build",
+      "problemMatcher": [],
+      "label": "npm: build:angular-components",
+      "detail": "npm run build angular-components --withDeps --configuration dev && npm run post angular-components --withDeps"
+    }
+  ]
+}

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { FormsModule } from '@angular/forms';
 
-import { InputDirective } from './input.directive';
+import { GoaAngularInputComponent } from './goa-angular-input/goa-angular-input.component';
 
 @NgModule({
   imports: [CommonModule, OverlayModule],
@@ -11,10 +11,10 @@ import { InputDirective } from './input.directive';
     FormsModule,
     OverlayModule,
     CommonModule,
-    InputDirective
+    GoaAngularInputComponent
   ],
   declarations: [
-    InputDirective
+    GoaAngularInputComponent
   ],
   providers: [],
   schemas: [
